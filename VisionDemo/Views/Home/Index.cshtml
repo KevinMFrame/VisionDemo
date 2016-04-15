@@ -1,0 +1,40 @@
+﻿@model VisionDemo.Models.CubeViewer
+@{
+
+}
+
+<!-- Required Stylesheets -->
+<link href="@Url.Content("~/Scripts/bootstrap/css/bootstrap.css")" type="text/css" rel="stylesheet" />
+<!-- Required Javascript -->
+<script src="@Url.Content("~/Scripts/jquery/jquery-2.2.3.min.js")"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-treeview/js/bootstrap-treeview.js")"></script>
+
+<div class="jumbotron" style="background-color: darkslategray;">
+    <h1 style="font-family:georgia ;color:white">QueBIT Cube Viewer</h1>
+</div>
+
+<div style="width: 25%">
+    <div id="tree"></div>
+</div>
+<!--
+    <div class="row">
+    @foreach (VisionDemo.Models.Cube cube in Model.Cubes)
+    {
+        <h2>@cube.Name</h2>
+        foreach (VisionDemo.Models.View view in cube.Views)
+        {
+            <h3>@view.Name</h3>
+        }
+    }
+</div>
+    -->
+<script>
+    function getTree() {
+
+        var tree = @Html.Raw(Json.Encode(@Model.Json));
+
+        return tree;
+}
+    $('#tree').treeview({ data: getTree() });
+    $('#tree').treeview('collapseAll', { silent: true });
+</script>
