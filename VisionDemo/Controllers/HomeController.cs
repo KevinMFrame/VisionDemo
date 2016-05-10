@@ -25,7 +25,7 @@ namespace VisionDemo.Controllers
                 VisionDemo.Models.Cube c = new VisionDemo.Models.Cube(cubeName);
                 foreach (string viewName in caller.GetViewNamesForCube(cubeName))
                 {
-                    c.Views.Add(new Models.View(viewName));
+                    c.Views.Add(new Models.View(cubeName,viewName));
                 }
                 cubes.Add(c);
             }

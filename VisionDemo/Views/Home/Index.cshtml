@@ -9,32 +9,54 @@
 <script src="@Url.Content("~/Scripts/jquery/jquery-2.2.3.min.js")"></script>
 <script src="@Url.Content("~/Scripts/bootstrap-treeview/js/bootstrap-treeview.js")"></script>
 
-<div class="jumbotron" style="background-color: darkslategray;">
-    <h1 style="font-family:georgia ;color:white">QueBIT Cube Viewer</h1>
+<div class="jumbotron" style="background-color: darkblue;">
+    <h1 style="font-family: Arial; color: white">QueBIT Cube Viewer</h1>
+</div>
+<div class="container" style="width: 100%">
+    <div class="row">
+        
+        <div class="col-md-4">
+            <div id="tree"></div>
+        </div>
+
+        <div class="col-md-8">
+            <!-- The iframe to host and display the Websheet -->
+            <iframe id="websheetId" style="width: 100%; height: 100%;"></iframe>
+        </div>
+    </div>
 </div>
 
-<div style="width: 25%">
-    <div id="tree"></div>
-</div>
-<!--
-    <div class="row">
-    @foreach (VisionDemo.Models.Cube cube in Model.Cubes)
-    {
-        <h2>@cube.Name</h2>
-        foreach (VisionDemo.Models.View view in cube.Views)
-        {
-            <h3>@view.Name</h3>
-        }
-    }
-</div>
-    -->
 <script>
     function getTree() {
 
         var tree = @Html.Raw(Json.Encode(@Model.Json));
 
         return tree;
-}
+    }
+
     $('#tree').treeview({ data: getTree() });
     $('#tree').treeview('collapseAll', { silent: true });
+    $('#tree').on('nodeSelected', function(event, data) {
+        loadWebsheet(data.cubeName, data.viewName);
+    });
+</script>
+
+<script type="text/javascript">
+
+                // The function to assemble the required URL and display the Websheet
+                function loadWebsheet(cube,view) {
+
+                    // Get a reference to the iframe
+                    webSheet = document.getElementById("websheetId");
+
+                    // Assemble the URL that specifies the Websheet you want to open
+                    baseUrl = "http://localhost:9510/tm1web/UrlApi.jsp";
+                    var websheetURL = baseUrl + "#Action=Open&Type=CubeViewer";
+                    websheetURL = websheetURL + "&Cube=" + cube + "&View=" + view;
+                    websheetURL = websheetURL + "&AccessType=Public";
+                    websheetURL = websheetURL + "&AdminHost=localhost&TM1Server=HackABIT&Username=admin&Password=apple";
+
+                    // Assign the URL to the iframe to display the Websheet
+                    webSheet.src = websheetURL;
+                };
 </script>

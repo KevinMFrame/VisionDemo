@@ -39,6 +39,14 @@ namespace VisionDemo.Controllers
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+                // Quick auth request
+                var testResponseForConnect = client.GetAsync("Configuration").Result;
+                var sessionId = testResponseForConnect.Headers.GetValues("Set-Cookie").FirstOrDefault();
+
+                // Add to client headers; remove login info (no longer needed since we have cookie)
+                client.DefaultRequestHeaders.Authorization = null;
+                client.DefaultRequestHeaders.Add("Cookie", sessionId);
+
                 string query = objectName.ToString() + "?$select=Name";
 
                 HttpResponseMessage response = client.GetAsync(query).Result;

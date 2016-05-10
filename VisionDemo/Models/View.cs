@@ -9,13 +9,16 @@ namespace VisionDemo.Models
 {
     public class View
     {
-        public View(string _name)
+        public View(string _cubeName,string _name)
         {
+            CubeName = _cubeName;
             Name = _name;
             Data = "";
             Color = Color.Black;
             BackColor = Color.LightGray;
         }
+
+        public string CubeName { get; set; }
 
         public string Name { get; set; }
         public string Data { get; set; }
@@ -34,6 +37,8 @@ namespace VisionDemo.Models
                 obj.selectedIcon = "glyphicon glyphicon-eye-open";
                 obj.color = ColorTranslator.ToHtml(Color);
                 obj.backColor = ColorTranslator.ToHtml(BackColor);
+                obj.cubeName = CubeName;
+                obj.viewName = Name;
 
                 return obj;
             }
